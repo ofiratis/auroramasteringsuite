@@ -1,0 +1,45 @@
+
+name: Aurora Mastering VST3 Build
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build VST3 - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-latest
+          - windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Configure Project
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build Plugin
+        run: cmake --build build --config Release --parallel 4
+
+      - name: Upload VST3
+        uses: actions/upload-artifact@v4
+        with:
+          name: Aurora-VST3-${{ matrix.os }}
+          path: |
+            build/AuroraMastering_artefacts/**/VST3/**
+          if-no-files-found: error
+          retention-days: 30
