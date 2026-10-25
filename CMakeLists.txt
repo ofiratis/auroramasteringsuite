@@ -15,6 +15,7 @@ juce_add_plugin(AuroraMastering
     NEEDS_MIDI_OUTPUT FALSE
     COPY_PLUGIN_AFTER_BUILD FALSE)
 target_sources(AuroraMastering PRIVATE Source/PluginProcessor.cpp Source/PluginEditor.cpp)
+juce_generate_juce_header(AuroraMastering)
 target_compile_features(AuroraMastering PRIVATE cxx_std_17)
 target_compile_definitions(AuroraMastering PUBLIC JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
 target_link_libraries(AuroraMastering PRIVATE juce::juce_audio_utils juce::juce_dsp juce::juce_audio_processors juce::juce_gui_extra juce::juce_recommended_config_flags juce::juce_recommended_warning_flags)
